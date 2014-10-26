@@ -1,7 +1,7 @@
 import requests, bs4, sys, time
 
-USERNAME = "lel" 
-PASSWORD = "lel"
+USERNAME = raw_input('Name pls: ') 
+PASSWORD = raw_input('Password pls: ')
 
 login_url = 'https://myvue.hsd.k12.or.us/Login_Student_PXP.aspx'
 protected_url = 'https://myvue.hsd.k12.or.us/Home_PXP.aspx'
