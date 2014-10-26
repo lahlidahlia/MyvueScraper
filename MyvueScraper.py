@@ -1,19 +1,23 @@
 import requests, bs4, sys, time
 
-USERNAME = "username" 
-PASSWORD = "password"
+USERNAME = "lel" 
+PASSWORD = "lel"
 
 login_url = 'https://myvue.hsd.k12.or.us/Login_Student_PXP.aspx'
 protected_url = 'https://myvue.hsd.k12.or.us/Home_PXP.aspx'
 
-#To get this information, go to the myvue login page, press F12 > network,
-#clear the entries, log on using your account, click on Login_Student_PXP.aspx
-#under the network tab, and look for form data. Copy and paste all of the informations
-#here
+
+
+with requests.session() as s:
+    get_payload = s.get(login_url)
+
+soup = bs4.BeautifulSoup(get_payload.text)
+viewstate = soup.select("#__VIEWSTATE")[0]['value']
+eventvalidation = soup.select("#__EVENTVALIDATION")[0]['value']
+
 payload = {
-    '__VIEWSTATE': "/wEPDwUKMTk4OTU4MDc2NWRkhaPCMTDo5uAcvztIUMPybq7F5qC35cmNiYoPt6oozZ4=",
-    '__VIEWSTATEGENERATOR' : "C520BE40",
-    '__EVENTVALIDATION': "/wEdAASvkKDJtIoL9ykvu7VExcu1KhoCyVdJtLIis5AgYZ/RYe4sciJO3Hoc68xTFtZGQEgSYOQVAPr9tiF9q7nSHjzonsQAUrP+el20mfFA1sZ2BeRkaGvIH+AdMJ1N3u/j8ew=",
+    '__VIEWSTATE': viewstate,
+    '__EVENTVALIDATION': eventvalidation,
     'username':USERNAME,
     'password':PASSWORD
 }
