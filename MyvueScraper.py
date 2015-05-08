@@ -42,27 +42,50 @@ get = s.get(math_url) #Get the page you want
 soup_get = bs4.BeautifulSoup(get.text) #Use soup to make the page pretty
 print soup_get.prettify() #Print HTMl
 
-#Print just the texts on the webpage
-print "Text:"
-print soup_get.get_text()
-
 
 weightTr = soup_get.find('td', text="Weight")
 weightTable = weightTr.parent.parent
-i = 0
-print(weightTable)
+
 weightTabEntries = [] #weightTabEntries will contain the tr which contains the td
 for x in weightTable.contents:
-    print(x.name)
     if x.name == 'tr':
         weightTabEntries.append(x)
 
 
 weightTableDict = {} #Key: Assignment Type, Value: Weight percent
-
-for i in weightTabEntries:
-    ls = i.contents
-    weightTableDict[ls[1].get_text()] = ls[2].get_text()
+for tr in weightTabEntries:
+    tdList = tr.contents
+    weightTableDict[tdList[1].get_text()] = tdList[2].get_text()
 print weightTableDict
+
+gradeTable = soup_get.find("td", text = "Score").parent.parent
+
+gradeTableEntries = []
+for i in gradeTable.contents:
+    if i.name == "tr":
+        gradeTableEntries.append(i)
+
+listOfAssignments = []
+for tr in gradeTableEntries:
+    #tdList numbering key:
+    # 0: \n
+    # 1: Dates
+    # 2: Assignment Name
+    # 3: Assignment Type
+    # 4: Resources (probably irrelevant)
+    # 5: Score
+    # 6: Score Type
+    # 7: Notes (irrelevant)
+
+    if tr["class"] == ["altrow1"] or tr["class"] == ["altrow2"]:
+        tdList = tr.contents
+        assignmentDetails = []
+        assignmentDetails.extend([tdList[2].get_text(), tdList[3].get_text(), tdList[5].get_text(), tdList[6].get_text()])
+        listOfAssignments.append(assignmentDetails)
+        #print "1 : {}".format(tdList[2].get_text())
+
+for i, j in zip(listOfAssignments, range(1, len(listOfAssignments))):
+    print "{}: {}".format(j, i)
+
 
 print post #server response (ex. code 200, 500, etc...)
