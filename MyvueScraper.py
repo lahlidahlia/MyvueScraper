@@ -47,11 +47,23 @@ print "Text:"
 #    print(stuffs.get('a'))
 
 #Get all the texts from the page and turn it into a single string
-all_texts = []
-for s in soup_get.find_all('a', text=True): 
-    all_texts += s  
-print "\n".join(all_texts) 
-    
+#all_texts = []
+#for s in soup_get.find_all('td'):
+#    print(s);
+
+weightTr = soup_get.find('td', text="Weight")
+weightTable = weightTr.parent.parent
+i = 0
+print(weightTable)
+weightTabEntries = None
+for x in weightTable.contents:
+    print(x.name)
+    if x.name == 'td':
+        weightTabEntries.put(x)
+print(weightTabEntries)
+        
+#for i in range(1, len(weightTable.contents) - 1):
+#    print(weightTable.contents[i])
 
 #Print all the links
 #print "Links:"
