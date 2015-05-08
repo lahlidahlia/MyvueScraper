@@ -45,15 +45,7 @@ print soup_get.prettify() #Print HTMl
 #Print just the texts on the webpage
 print "Text:"
 print soup_get.get_text()
-#print soup_get.get_text().split()
 
-#for stuffs in soup_get.find_all('td'):
-#    print(stuffs.get('a'))
-
-#Get all the texts from the page and turn it into a single string
-#all_texts = []
-#for s in soup_get.find_all('td'):
-#    print(s);
 
 weightTr = soup_get.find('td', text="Weight")
 weightTable = weightTr.parent.parent
@@ -70,16 +62,7 @@ weightTableDict = {} #Key: Assignment Type, Value: Weight percent
 
 for i in weightTabEntries:
     ls = i.contents
-##    print unicode(ls[1].get_text())
     weightTableDict[ls[1].get_text()] = ls[2].get_text()
 print weightTableDict
-    
-#for i in range(1, len(weightTable.contents) - 1):
-#    print(weightTable.contents[i])
-
-#Print all the links
-#print "Links:"
-#for link in soup_get.find_all('a'):
-#    print(link.get('href'))
 
 print post #server response (ex. code 200, 500, etc...)
