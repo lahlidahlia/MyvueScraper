@@ -55,7 +55,8 @@ for x in weightTable.contents:
 weightTableDict = {} #Key: Assignment Type, Value: Weight percent
 for tr in weightTabEntries:
     tdList = tr.contents
-    weightTableDict[tdList[1].get_text()] = tdList[2].get_text()
+    if tdList[1].get_text() != 'Assignment Type' and tdList[1].get_text() != 'Totals':
+        weightTableDict[tdList[1].get_text()] = tdList[2].get_text()
 print weightTableDict
 
 gradeTable = soup_get.find("td", text = "Score").parent.parent
@@ -83,6 +84,8 @@ for tr in gradeTableEntries:
         assignmentDetails.extend([tdList[2].get_text(), tdList[3].get_text(), tdList[5].get_text(), tdList[6].get_text()])
         listOfAssignments.append(assignmentDetails)
         #print "1 : {}".format(tdList[2].get_text())
+
+
 
 for i, j in zip(listOfAssignments, range(1, len(listOfAssignments))):
     print "{}: {}".format(j, i)
