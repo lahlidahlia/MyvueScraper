@@ -1,3 +1,4 @@
+from __future__ import division
 import requests, bs4, sys, time
 
 USERNAME = raw_input('User Name pls: ')
@@ -56,7 +57,7 @@ weightTableDict = {} #Key: Assignment Type, Value: Weight percent
 for tr in weightTabEntries:
     tdList = tr.contents
     if tdList[1].get_text() != 'Assignment Type' and tdList[1].get_text() != 'Totals':
-        weightTableDict[tdList[1].get_text()] = tdList[2].get_text()
+        weightTableDict[tdList[1].get_text()] = float(tdList[2].get_text().strip('%')) / 100
 print weightTableDict
 
 gradeTable = soup_get.find("td", text = "Score").parent.parent
@@ -86,9 +87,39 @@ for tr in gradeTableEntries:
         #print "1 : {}".format(tdList[2].get_text())
 
 
-
+percentListOfAssignments = []
 for i, j in zip(listOfAssignments, range(1, len(listOfAssignments))):
     print "{}: {}".format(j, i)
+    assignment = []
+    if i[3] == 'Raw Score':
+        scoreNumbers = i[2].split(" out of ")
+        score = float(scoreNumbers[0]) / float(scoreNumbers[1])
+        print(score)
+        assignment.extend([score, i[1]])
+        percentListOfAssignments.append(assignment)
+    elif i[3] == 'Percentage':
+        score = float(i[2]) / 100
+        print(score)
+        assignment.extend([score, i[1]])
+        percentListOfAssignments.append(assignment)
 
+percentWeightCategory = {}
+for name, weight in weightTableDict.items():
+    sumAllScores = 0
+    numScores = 0
+    for assignment in percentListOfAssignments:
+        if assignment[1] == name:
+            sumAllScores += assignment[0]
+            numScores += 1
+    percentWeightCategory[name] = sumAllScores / numScores
+
+listOfWeightedPercents = []
+for name, percent in percentWeightCategory.items():
+    listOfWeightedPercents.append(percent * weightTableDict[name])
+
+gradePercent = 0
+for p in listOfWeightedPercents:
+    gradePercent += p
+print(gradePercent)
 
 print post #server response (ex. code 200, 500, etc...)
