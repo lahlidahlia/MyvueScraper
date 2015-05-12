@@ -9,10 +9,10 @@ try:
     password = login.readline().rstrip()
 except IOError:
     login = open('credentials', 'w+')
-    username = raw_input('username pls: ') + "\n"
-    password = raw_input('password pls: ') + "\n"
-    login.write(username)
-    login.write(password)
+    username = raw_input('username pls: ')
+    password = raw_input('password pls: ')
+    login.write(username + "\n")
+    login.write(password + "\n")
 USERNAME = username
 PASSWORD = password
 
