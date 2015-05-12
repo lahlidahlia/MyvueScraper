@@ -1,14 +1,20 @@
 from __future__ import division
 import requests, bs4, sys, time, re
 
+username = None
+password = None
 try:
     login = open('credentials', 'r')
+    username = login.readline().rstrip()
+    password = login.readline().rstrip()
 except IOError:
     login = open('credentials', 'w+')
-    login.write(raw_input('username pls: ') + "\n")
-    login.write(raw_input('password pls: ') + "\n")
-USERNAME = login.readline().rstrip()
-PASSWORD = login.readline().rstrip()
+    username = raw_input('username pls: ') + "\n"
+    password = raw_input('password pls: ') + "\n"
+    login.write(username)
+    login.write(password)
+USERNAME = username
+PASSWORD = password
 
 login_url = 'https://myvue.hsd.k12.or.us/Login_Student_PXP.aspx' #URL of the login page
 destination_url = 'https://myvue.hsd.k12.or.us/PXP_Gradebook.aspx?AGU=0' #URL of where you want to go
